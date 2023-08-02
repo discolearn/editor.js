@@ -1,6 +1,6 @@
 {
   "name": "@discolearn/editorjs",
-  "version": "2.27.0-alpha.1+0.0.1",
+  "version": "2.27.1",
   "description": "Fork of Editor.js — Native JS, based on API and Open Source",
   "main": "dist/editor.js",
   "types": "./types/index.d.ts",
