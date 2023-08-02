@@ -195,10 +195,27 @@ export default class Paste extends Module {
       } catch (e) { } // Do nothing and continue execution as usual if error appears
     }
 
-    // Creates an <a> tag for links within plain texts
-    htmlData = plainData.split(` `).map((word) => {
-      return ((word.startsWith(`http:`)) || (word.startsWith(`https:`))) ? `<a href="${word}">${word}</a>` : word;
-    }).join(` `);
+    // Creates an <a> tag for links within plain text
+    const links = plainData.split(' ')
+      .map(word => word.split('\n'))
+      .flat()
+      .filter((word) => {
+        return ((word.startsWith('http:')) || (word.startsWith('https:')));
+      })
+      // Remove any duplicates
+      .filter((word, index, self) => {
+        return self.indexOf(word) === index;
+      });
+
+    for (const link of links) {
+      // Escape the search string to handle special characters
+      const escapedLink = link.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+      // Match the link if it is not already wrapped in an <a> tag and if it is not an href attribute
+      const regexPattern = new RegExp(`(?<!href=")${escapedLink}(?<!!\\/a>)`, 'g');
+
+      htmlData = htmlData.replace(regexPattern, `<a href="${link}">${link}</a>`);
+    }
 
     // /**
     //  *  If text was drag'n'dropped, wrap content with P tag to insert it as the new Block
