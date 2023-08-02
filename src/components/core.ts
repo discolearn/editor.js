@@ -80,27 +80,24 @@ export default class Core {
 
         _.logLabeled('I\'m ready! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧', 'log', '', 'color: #E24A75');
 
-        setTimeout(async () => {
-          await this.render();
+        await this.render();
 
-          if ((this.configuration as EditorConfig).autofocus) {
-            const { BlockManager, Caret } = this.moduleInstances;
+        if ((this.configuration as EditorConfig).autofocus) {
+          const { BlockManager, Caret } = this.moduleInstances;
 
-            Caret.setToBlock(BlockManager.blocks[0], Caret.positions.START);
-            BlockManager.highlightCurrentNode();
-          }
+          Caret.setToBlock(BlockManager.blocks[0], Caret.positions.START);
+          BlockManager.highlightCurrentNode();
+        }
 
-          /**
-           * Remove loader, show content
-           */
-          this.moduleInstances.UI.removeLoader();
+        /**
+         * Remove loader, show content
+         */
+        this.moduleInstances.UI.removeLoader();
 
-          /**
-           * Resolve this.isReady promise
-           */
-          onReady();
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-        }, 500);
+        /**
+         * Resolve this.isReady promise
+         */
+        onReady();
       })
       .catch((error) => {
         _.log(`Editor.js is not ready because of ${error}`, 'error');
